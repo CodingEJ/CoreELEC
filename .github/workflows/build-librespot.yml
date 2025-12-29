@@ -13,9 +13,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential gperf zip unzip libncurses5-dev zlib1g-dev \
-          libssl-dev java-common gawk xfonts-utils xsltproc python3-dev python3-jsonschema \
-          curl git libxml-parser-perl
+          sudo apt install build-essential git python3
 
       # --- NEW CACHE STEP ---
       - name: Cache CoreELEC Build Folders
