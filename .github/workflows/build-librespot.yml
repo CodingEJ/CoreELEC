@@ -2,28 +2,41 @@ name: Build Librespot v0.8.0
 on: [workflow_dispatch]
 
 jobs:
-  build-addon:
+  build:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout CoreELEC
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: coreelec-21 # Use the branch matching your CE version
+          ref: coreelec-21
 
-      - name: Setup Build Dependencies
+      - name: Install Dependencies
         run: |
           sudo apt update
           sudo apt install -y build-essential gperf zip unzip libncurses5-dev zlib1g-dev \
           libssl-dev java-common gawk xfonts-utils xsltproc python3-dev python3-jsonschema \
           curl git libxml-parser-perl
 
-      - name: Build Addon for Amlogic-ne
+      # --- NEW CACHE STEP ---
+      - name: Cache CoreELEC Build Folders
+        uses: actions/cache@v4
+        with:
+          # We cache 'sources' (downloaded code) and 'build.*' (compiled tools)
+          path: |
+            sources
+            build.*
+          # The key changes if package.mk changes, forcing a fresh build when needed
+          key: ${{ runner.os }}-ce-build-${{ hashFiles('**/package.mk') }}
+          restore-keys: |
+            ${{ runner.os }}-ce-build-
+      # -----------------------
+
+      - name: Build Addon
         run: |
-          # Use PROJECT=Amlogic-ce and DEVICE=Amlogic-ne for the -ne kernel
           PROJECT=Amlogic-ce DEVICE=Amlogic-ne ARCH=aarch64 ./scripts/build service/librespot
 
       - name: Upload Zip
-        uses: actions/upload-artifact@v4   # The official GitHub tool for saving files
+        uses: actions/upload-artifact@v4
         with:
-          name: service.librespot-v0.8.0-ne # The name of the download link you'll see
-          path: target/addons/**/*.zip      # THE MOST IMPORTANT PART
+          name: service.librespot-v0.8.0-ne
+          path: target/addons/**/*.zip
