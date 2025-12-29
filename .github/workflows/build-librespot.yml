@@ -22,6 +22,7 @@ jobs:
           # We cache 'sources' (downloaded code) and 'build.*' (compiled tools)
           path: |
             sources
+            toolchain
             build.*
           # The key changes if package.mk changes, forcing a fresh build when needed
           key: ${{ runner.os }}-ce-build-${{ hashFiles('**/package.mk') }}
