@@ -3,7 +3,8 @@ on: [workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+#    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04 LTS
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -13,7 +14,8 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install build-essential git python3
+          sudo apt upgradee
+          sudo apt install build-essential git python3 make
 
       # --- NEW CACHE STEP ---
       - name: Cache CoreELEC Build Folders
