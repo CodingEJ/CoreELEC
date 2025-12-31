@@ -13,9 +13,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt update
-          sudo apt install build-essential git python3 make
-          type perl
-          whereis perl
+          sudo apt install -y build-essential bash bc bzip2 desktop-file-utils g++ gawk gcc git gperf patch sed make make-doc patchutils python3 python3-psutil python3-setuptools python-is-python3 tar texinfo unzip xz-utils zlib1g-dev libncurses5-dev libssl-dev openssl gperf xsltproc wget zstd
 
       # --- NEW CACHE STEP ---
       - name: Cache CoreELEC Build Folders
